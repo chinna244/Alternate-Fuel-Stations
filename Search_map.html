@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    /* Add your CSS styles here */
+  </style>
+</head>
+<body>
+  <header>
+    <!-- Add your header code here -->
+  </header>
+  <main>
+    <form id="search-form">
+      <label for="location">Location:</label>
+      <input type="text" id="location" name="location" placeholder="Enter your address or zip code">
+      <label for="route">Route:</label>
+      <input type="text" id="route" name="route" placeholder="Enter your origin and destination">
+      <label for="fuel-type">Fuel Type:</label>
+      <select id="fuel-type" name="fuel-type">
+        <option value="">All</option>
+        <option value="BD">Biodiesel (B20 and above)</option>
+        <option value="ELEC">Electric</option>
+        <option value="E85">Ethanol (E85)</option>
+        <option value="HY">Hydrogen</option>
+        <option value="CNG">Natural Gas (CNG)</option>
+        <option value="LNG">Natural Gas (LNG)</option>
+        <option value="LPG">Propane (LPG)</option> 
+      </select> 
+      <button id="submit-button" type="submit">Search</button>     
+    </form>
+    <section id="search-results">
+      <div id="map" style="width: 600px; height: 400px;"></div>
+    </section>
+  </main>
+  <script>
+    // Add your JavaScript code here
+    var form = document.getElementById("search-form");
+    var button = document.getElementById("submit-button");
+    var apiKey = "hkZVQijE8ZvMpchuICzQYDI8gIyPjxVsGzt9h0oI"; // Replace with your API key
+    var apiUrl = "https://developer.nrel.gov/api/alt-fuel-stations/v1/nearest.json?api_key=" + apiKey; // Base URL for the API
+    var map;
+
+    function initMap() {
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 38.9072, lng: -77.0369 },
+        zoom: 10
+      });
+    }
+
+    button.addEventListener("click", function (event) {
+      // Prevent the default form submission behavior
+      event.preventDefault();
+      // Get the user input values
+      var location = document.getElementById("location").value;
+      var route = document.getElementById("route").value;
+      var fuelType = document.getElementById("fuel-type").value;
+      // Validate the user input
+      if (location == "" && route == "") {
+        // No location or route entered
+        alert("Please enter a location or a route");
+        return;
+      }
+      if (location != "" && route != "") {
+        // Both location and route entered
+        alert("Please enter either a location or a route, not both");
+        return;
+      }
+      // Build the API request URL
+      var requestUrl = apiUrl;
+      if (location != "") {
+        // Location entered
+        requestUrl += "&location=" + location;
+      }
+      if (route != "") {
+        // Route entered
+        requestUrl += "&route=" + route;
+      }
+      if (fuelType != "") {
+        // Fuel type selected
+        requestUrl += "&fuel_type=" + fuelType;
+      }
+      // Send the API request using XMLHttpRequest
+      var xhr = new XMLHttpRequest();
+      xhr.open("GET", requestUrl);
+      xhr.onload = function () {
+        if (xhr.status == 200) {
+          // Request successful
+          var response = JSON.parse(xhr.responseText);
+          var stations = response.fuel_stations;
+          if (stations.length > 0) {
+            // Stations found
+            initMap(); // Initialize the map
+
+            map.data.loadGeoJson(requestUrl); // Load data on the map
+
+            // Set the style of the markers
+            map.data.setStyle({
+              icon: {
+                path: google.maps.SymbolPath.CIRCLE,
+                scale: 8,
+                fillColor: "blue",
+                fillOpacity: 0.8,
+                strokeColor: "white",
+                strokeWeight: 2
+              }
+            });
+          } else {
+            // No stations found
+            alert("No stations found for your search criteria.");
+          }
+        } else {
+          // Request failed
+          alert("Sorry, something went wrong. Please try again later.");
+        }
+      };
+      xhr.send();
+    });
+  </script>
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB1x9G5rRi3IMitvlQu6c-xWrRBBYgFWxI&callback=initMap" async defer></script>
+</body>
+</html>
