@@ -2,16 +2,76 @@
 <head>
   <style>
     /* Add your CSS styles here */
+    /* Use a custom font for the whole page */
+@import url('https://fonts.googleapis.com/css?family=Roboto');
+* {
+  font-family: 'Roboto', sans-serif;
+}
+
+/* Set the background color and some padding for the header */
+header {
+  background-color: #4CAF50;
+  padding: 20px;
+}
+
+/* Center the logo image and make it responsive */
+header img {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+  height: auto;
+}
+
+/* Style the navigation menu with horizontal list items and links */
+nav {
+  text-align: center;
+}
+nav ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+nav li {
+  display: inline-block;
+}
+nav a {
+  color: white;
+  text-decoration: none;
+  padding: 10px;
+}
+
+/* Change the link color on hover */
+nav a:hover {
+  color: #F0F0F0;
+}
+
+/* Style the main content with a light gray background and some margin */
+main {
+  background-color: #F0F0F0;
+  margin: 20px;
+}
+
+/* Style the button with a green border and some padding */
+button {
+  border: 2px solid #4CAF50;
+  padding: 10px;
+}
+
+/* Change the button color on hover */
+button:hover {
+  background-color: #4CAF50;
+  color: white;
+}
   </style>
 </head>
 <body>
   <header>
     <h1>Alternative Fuel Finder</h1>
-    <img src="logo.png" alt="Logo">
+    <img src="logo.jpeg" alt="Logo">
     <nav>
       <ul>
         <li><a href="index.html">Home</a></li>
-        <li><a href="search.html">Search</a></li>
+        <li><a href="search1.html">Search</a></li>
         <li><a href="about.html">About</a></li>
       </ul>
     </nav>
